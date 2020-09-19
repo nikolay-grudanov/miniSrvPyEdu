@@ -41,8 +41,8 @@ else:
 
 
 # функция которая выводит информацию о поступившем запросе
-@app.route('/', methods=['GET', 'POST'], defaults={'path': ''})
-@app.route('/<path:path>', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST', 'PUT'], defaults={'path': ''})
+@app.route('/<path:path>', methods=['GET', 'POST', 'PUT'])
 def request_info(path):
     if path is None:
         path = "null"
