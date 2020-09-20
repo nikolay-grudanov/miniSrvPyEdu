@@ -146,7 +146,7 @@ def return_file_response():
         return make_response(json_data, 200)
     except :
             cwd = os.getcwd()
-            response_str = "Failed to open the file. Check it path: " + cwd + "\\" + str_name 
+            response_str = "Failed to open the file. Check it path: " + cwd 
             abort(400, response_str) 
 
 
