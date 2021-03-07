@@ -107,7 +107,7 @@ data: \n''' + str_date
 
 
 # функция для проверки задежки
-@app.route('/delay')
+@app.route('/delay', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def delay_response():
     str_wait = request.args.to_dict().get("wait")
     if str_wait is None:
@@ -123,7 +123,7 @@ def delay_response():
 
 
 # функция для получения файла
-@app.route('/return-file')
+@app.route('/return-file', methods=['GET'])
 def return_file_response():
     str_name = request.args.to_dict().get("name")
     if str_name is None:
