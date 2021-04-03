@@ -18,7 +18,8 @@ def out_red(text):
     print(Fore.RED + format(text))
     print(Style.RESET_ALL)
 
-
+# Настройка приложения через ввод параметров в консоли
+# TODO: Добавить выбор сохранения результатов. Формат сохранения в хэдер
 while success_input_port is False and test_port < 10:
     str_port = (input("Введите порт\nport = "))
     try:
@@ -123,6 +124,7 @@ def delay_response():
 
 
 # функция для получения файла
+# TODO: Добавить работу с XML и текстом
 @app.route('/return-file', methods=['GET'])
 def return_file_response():
     str_name = request.args.to_dict().get("name")
