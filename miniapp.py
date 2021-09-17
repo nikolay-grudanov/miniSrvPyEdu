@@ -12,6 +12,7 @@ app = Flask(__name__)
 success_input_port = False
 test_port = 0
 
+print("Hi!")
 
 # Функция для выводв красного цвета
 def out_red(text):
