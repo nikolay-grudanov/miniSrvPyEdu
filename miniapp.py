@@ -20,6 +20,7 @@ def out_red(text):
 
 # Настройка приложения через ввод параметров в консоли
 # TODO: Добавить выбор сохранения результатов. Формат сохранения в хэдер
+# TODO:Вынести в отдельный модуль\файл
 while success_input_port is False and test_port < 10:
     str_port = (input("Введите порт\nport = "))
     try:
