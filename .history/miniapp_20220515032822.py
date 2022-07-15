@@ -11,7 +11,6 @@ app = Flask(__name__)
 # задаём параметры для работы приложения
 success_input_port = False
 test_port = 0
-my_path = '/test/foo'
 
 # Функция для вывода красного цвета
 def out_red(text):
@@ -21,8 +20,6 @@ def out_red(text):
 # Настройка приложения через ввод параметров в консоли
 # TODO: Добавить выбор сохранения результатов. Формат сохранения в хэдер
 # TODO:Вынести в отдельный модуль\файл
-
-int_port = 80 # Порт по уполчанию
 while success_input_port is False and test_port < 10:
     str_port = (input("Введите порт\nport = "))
     try:
@@ -42,10 +39,6 @@ else:
 
     else:
         pass
-
-@app.route(my_path, methods=['GET', 'POST', 'PUT', 'DELETE'])
-def test_response():
-    return make_response(jsonify({'test': 'ok'}), 200)
 
 
 # функция которая выводит информацию о поступившем запросе
