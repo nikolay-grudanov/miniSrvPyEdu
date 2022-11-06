@@ -1,28 +1,37 @@
 #!flask/bin/python
-from flask import Flask, jsonify, request, abort, make_response, json
-import werkzeug
-import time
 import os
 import re
+import time
+
+import werkzeug
 from colorama import Fore, Style
+from flask import Flask, abort, json, jsonify, make_response, request
 
 app = Flask(__name__)
-
 # задаём параметры для работы приложения
 success_input_port = False
 test_port = 0
 my_path = '/test/foo'
 
+# TODO!: Вынести все функции в отдельный модуль
 # Функция для вывода красного цвета
 def out_red(text):
     print(Fore.RED + format(text))
     print(Style.RESET_ALL)
 
+
+# Функция для прочтения json файла
+def get_setting(name):
+    with open(name, 'r', encoding='utf-8') as f:  # открыли файл с данными
+        setting = json.load(f)  # загнали все, что получилось в переменную
+        # print(setting)
+        return (setting)
+
 # Настройка приложения через ввод параметров в консоли
 # TODO: Добавить выбор сохранения результатов. Формат сохранения в хэдер
-# TODO:Вынести в отдельный модуль\файл
+# TODO: Вынести в отдельный модуль\файл
 
-int_port = 80 # Порт по уполчанию
+int_port = 80   # Порт по уполчанию
 while success_input_port is False and test_port < 10:
     str_port = (input("Введите порт\nport = "))
     try:
@@ -43,6 +52,8 @@ else:
     else:
         pass
 
+
+# Попытка сделать унифированый вызов путей из json файла
 @app.route(my_path, methods=['GET', 'POST', 'PUT', 'DELETE'])
 def test_response():
     return make_response(jsonify({'test': 'ok'}), 200)
@@ -131,7 +142,7 @@ def delay_response():
 
 
 # функция для получения файла
-# TODO: Добавить работу с XML и текстом
+# TODO?: Добавить работу с XML и текстом
 @app.route('/return-file', methods=['GET'])
 def return_file_response():
     str_name = request.args.to_dict().get("name")
@@ -147,13 +158,11 @@ def return_file_response():
     if result[1] != "json":
         response_str = "Only json files are supported. You have sent: " + str(result[1])
         abort(400, response_str) 
-
-
     try:
         with open(str_name) as json_file:
             json_data = json.load(json_file)
         return make_response(json_data, 200)
-    except :
+    except:
             cwd = os.getcwd()
             response_str = "Failed to open the file. Check it path: " + cwd 
             abort(400, response_str) 
