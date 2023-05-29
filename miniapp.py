@@ -5,6 +5,7 @@ import time
 
 import werkzeug
 from colorama import Fore, Style
+# TODO: Переделать на фаст апи
 from flask import Flask, abort, json, jsonify, make_response, request
 
 app = Flask(__name__)
@@ -13,8 +14,10 @@ success_input_port = False
 test_port = 0
 my_path = '/test/foo'
 
-# TODO!: Вынести все функции в отдельный модуль
+# TODO: Вынести все функции в отдельный модуль
 # Функция для вывода красного цвета
+
+
 def out_red(text):
     print(Fore.RED + format(text))
     print(Style.RESET_ALL)
@@ -31,7 +34,8 @@ def get_setting(name):
 # TODO: Добавить выбор сохранения результатов. Формат сохранения в хэдер
 # TODO: Вынести в отдельный модуль\файл
 
-int_port = 80   # Порт по уполчанию
+
+int_port = 80   # Порт по умолчанию
 while success_input_port is False and test_port < 10:
     str_port = (input("Введите порт\nport = "))
     try:
@@ -46,7 +50,8 @@ while success_input_port is False and test_port < 10:
         out_red("Порт должен быть числом !!!")
 else:
     if test_port == 10:
-        out_red("Не получилось ввести порт 10 раз подряд !!!\nСервер прекратит работу через 5 секунд.")
+        out_red(
+            "Не получилось ввести порт 10 раз подряд !!!\nСервер прекратит работу через 5 секунд.")
         time.sleep(5)
 
     else:
@@ -95,7 +100,8 @@ def request_info(path):
     # пустой массив
     a = []
     while i < len_hed:
-        a.append('\n    ' + ''.join(header[i][0]) + ' = ' + ''.join(header[i][1:len(header[i])]))
+        a.append('\n    ' + ''.join(header[i][0]) +
+                 ' = ' + ''.join(header[i][1:len(header[i])]))
         i += 1
     str_headers = ''.join(a)
     # работа с телом запроса
@@ -106,7 +112,8 @@ def request_info(path):
         try:
             str_date = request.get_data().decode()
         except:
-            save_body = open("save_" + time.strftime('%Y-%m-%d.%H.%M.%S') + "_.txt", 'wb')
+            save_body = open(
+                "save_" + time.strftime('%Y-%m-%d.%H.%M.%S') + "_.txt", 'wb')
             save_body.write(request.get_data())
             save_body.close()
             str_date = "Не получилось прочитать тело"
@@ -125,13 +132,15 @@ data: \n''' + str_date
     return make_response(jsonify({'Info': 'Ok'}), 200)
 
 
-# функция для проверки задежки
+# функция для проверки задержки
 @app.route('/delay', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def delay_response():
     str_wait = request.args.to_dict().get("wait")
     if str_wait is None:
-        # abort(400, 'Not found query params "wait"')
-        return make_response(jsonify({"error": "Not found query params wait"}), 400)
+        # abort(400, 'Not found query prams "wait"')
+        return make_response(
+            jsonify({"error": "Not found query params wait"}), 400
+        )
     else:
         try:
             int_wait = int(str_wait)
@@ -142,7 +151,7 @@ def delay_response():
 
 
 # функция для получения файла
-# TODO?: Добавить работу с XML и текстом
+# TODO: Добавить работу с XML и текстом
 @app.route('/return-file', methods=['GET'])
 def return_file_response():
     str_name = request.args.to_dict().get("name")
@@ -153,19 +162,20 @@ def return_file_response():
 
     if len(result) < 2:
         response_str = "You need to specify the file extension."
-        abort(400, response_str) 
+        abort(400, response_str)
 
     if result[1] != "json":
-        response_str = "Only json files are supported. You have sent: " + str(result[1])
-        abort(400, response_str) 
+        response_str = "Only json files are supported. You have sent: " + \
+            str(result[1])
+        abort(400, response_str)
     try:
         with open(str_name) as json_file:
             json_data = json.load(json_file)
         return make_response(json_data, 200)
     except:
-            cwd = os.getcwd()
-            response_str = "Failed to open the file. Check it path: " + cwd 
-            abort(400, response_str) 
+        cwd = os.getcwd()
+        response_str = "Failed to open the file. Check it path: " + cwd
+        abort(400, response_str)
 
 
 if __name__ == '__main__':
